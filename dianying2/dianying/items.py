@@ -11,6 +11,7 @@ import scrapy
 class DianyingItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    VideoId = scrapy.Field()
     VideoTitle = scrapy.Field()
     VideoLink = scrapy.Field()
     VideoND = scrapy.Field()

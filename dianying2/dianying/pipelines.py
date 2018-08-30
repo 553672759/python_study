@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from pymongo import MongoClient
-import scrapy
-import MySQLdb
+import pymysql
 from scrapy.exceptions import DropItem
 from scrapy.pipelines.images import ImagesPipeline
 # Define your item pipelines here
@@ -12,21 +9,40 @@ from scrapy.pipelines.images import ImagesPipeline
 
 
 class DianyingPipeline(object):
+
     def __init__(self):
 
-        dbargs = dict(
-        host = '127.0.0.1:3306',
-        db = 'myweb',
-        user = 'root',  # replace with you user name
-        passwd = '123456',  # replace with you password
-        charset = 'utf8',
-        cursorclass = MySQLdb.cursors.DictCursor,
-        use_unicode = True,
+        #连接数据库
+        self.con=pymysql.connect(
+            host="127.0.0.1",
+            db="myweb",
+            user="root",
+            passwd="123456",
+            charset='utf8',
+            use_unicode=True
         )
 
-        def process_item(self, item, spider):
-        data = dict(item)
-        self.post.insert(data)
+        # 通过cursor执行增删查改
+        self.cue = self.con.cursor();
+
+    def process_item(self,item,spider):
+
+        print("mysql connect succes")
+        self.cue.execute("""insert into Videos(VideoId, VideoTitle, VideoLink, VideoND ,VideoContent, VideoPF,VideoImgName,VideoTag,VideoImg)values (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                [item['VideoId'],
+                 item['VideoTitle'],
+                 item['VideoLink'],
+                 item['VideoND'],
+                 item['VideoContent'],
+                 item['VideoPF'],
+                 item['VideoImgName'],
+                 item['VideoTag'],
+                 item['VideoImg']
+                 ])
+        print("insert success")
+        #提交sql语句
+        self.con.commit()
+        self.con.close()
         return item
 
 

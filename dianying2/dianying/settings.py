@@ -19,6 +19,13 @@ FEED_EXPORT_ENCODING = 'utf-8'
 #USER_AGENT = 'dianying (+http://www.yourdomain.com)'
 USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;"
 
+MYSQL_HOST='127.0.0.1'
+MYSQL_PORT =3306
+MYSQL_USER='root'
+MYSQL_PASSWORD='123456'
+MYSQL_DB='myweb'
+CHARSET='utf8'
+
 # ITEM_PIPELINES = {'dianying.pipelines.MzituScrapyPipeline',2   }
 # IMAGES_STORE = 'D:\img'
 
