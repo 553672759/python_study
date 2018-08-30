@@ -20,7 +20,7 @@ class dianying(scrapy.Spider):
     def parse(self,response):
         reload(sys)
         sys.setdefaultencoding('utf-8')
-        for i in range(97042,97044):
+        for i in range(95000,99901):
             url = "https://www.dy2018.com/i/" + str(i) + ".html"
             print str(i) + '...open'
             yield scrapy.spiders.Request(url=url, callback=self.parse_do)
@@ -43,14 +43,31 @@ class dianying(scrapy.Spider):
                 print "i========="+i
                 video_link+= i
                 video_link += "##"
-
             item['VideoId'] = str(uuid.uuid4())
-            item['VideoLink'] = video_link
+            try:
+                item['VideoLink'] = video_link
+            except Exception as e:
+                item['VideoLink'] = ""
+
             item['VideoTitle'] = response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[1]/h1/text()').extract()[0]
-            item['VideoTag'] =  response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[2]/a/text()').extract()[0]
-            item['VideoND'] = response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[3]/text()').extract()[0]
-            item['VideoPF'] = response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[1]/strong/text()').extract()[0]
-            item['VideoContent'] = response.xpath('//*[@id="Zoom"]').extract()
+
+            try:
+                item['VideoTag'] =  response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[2]/a/text()').extract()[0]
+            except Exception as e:
+                item['VideoTag']=""
+            try:
+                item['VideoND'] = response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[3]/text()').extract()[0]
+            except Exception as e:
+                item['VideoND'] =""
+            try:
+                item['VideoPF'] = response.xpath('//*[@id="header"]/div/div[3]/div[2]/div[6]/div[2]/ul/div[1]/span[1]/strong/text()').extract()[0]
+            except Exception as e:
+                item['VideoPF'] =""
+            try:
+                item['VideoContent'] = response.xpath('//*[@id="Zoom"]').extract()
+            except Exception as e:
+                item['VideoContent'] =""
+
             imglink = response.xpath('//*[@id="Zoom"]/p[1]/img/@src').extract()
             item['VideoImg'] = imglink
             if(not len(imglink) == 0):

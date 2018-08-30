@@ -42,7 +42,6 @@ class DianyingPipeline(object):
         print("insert success")
         #提交sql语句
         self.con.commit()
-        self.con.close()
         return item
 
 
